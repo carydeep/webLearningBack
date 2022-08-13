@@ -46,7 +46,6 @@ app.use("/api/course/mycourse", lessonRoute)
 app.use("/api/exercise", exerciseRoute)
 app.use("/api/search", searchRoute)
 
-const PORT = server.listen(process.env.PORT || 6969)
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 6969, () => {
   console.log("Server is running")
 })

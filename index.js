@@ -47,6 +47,6 @@ app.use("/api/exercise", exerciseRoute)
 app.use("/api/search", searchRoute)
 
 const PORT = 6969
-app.listen(PORT, () => {
+app.listen(PORT || 6969, () => {
   console.log("Server is running")
 })

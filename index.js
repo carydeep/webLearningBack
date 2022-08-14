@@ -29,6 +29,7 @@ mongoose
 app.use(
   cors({
     origin: "https://web-learning-front.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 )

@@ -59,7 +59,7 @@ const authController = {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         sameSite: "none",
-        domain: "https://web-learning-front.vercel.app/",
+        domain: "web-learning-front.vercel.app",
         secure: true,
         expires: new Date(Date.now() + TIME365),
       })

@@ -57,6 +57,10 @@ const authController = {
         process.env.JWT_REFRESH_KEY
       )
       res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        sameSite: "none",
+        domain: "https://web-learning-front.vercel.app/",
+        secure: true,
         expires: new Date(Date.now() + TIME365),
       })
       const { password: pass, ...removePass } = user._doc
@@ -69,7 +73,7 @@ const authController = {
     res.clearCookie("refreshToken", {
       httpOnly: true,
       sameSite: "none",
-      domain: "web-learning-front.vercel.app",
+      domain: "https://web-learning-front.vercel.app/",
       secure: true,
     })
     res.status(200).json("Logout successful")

@@ -58,9 +58,6 @@ const authController = {
       )
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: false,
-        path: "/",
-        sameSite: "strict",
         expires: new Date(Date.now() + TIME365),
       })
       const { password: pass, ...removePass } = user._doc
@@ -72,9 +69,6 @@ const authController = {
   logoutUser: async (req, res) => {
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: false,
-      path: "/",
-      sameSite: "strict",
     })
     res.status(200).json("Logout successful")
   },
@@ -96,9 +90,6 @@ const authController = {
       )
       res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
-        secure: false,
-        path: "/",
-        sameSite: "strict",
         expires: new Date(Date.now() + TIME365),
       })
       res.status(200).json({ accessToken: newAcessToken })

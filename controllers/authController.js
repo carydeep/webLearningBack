@@ -58,6 +58,9 @@ const authController = {
       )
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
+        sameSite: "none",
+        domain: "web-learning-front.vercel.app",
+        secure: true,
         expires: new Date(Date.now() + TIME365),
       })
       const { password: pass, ...removePass } = user._doc
@@ -69,6 +72,9 @@ const authController = {
   logoutUser: async (req, res) => {
     res.clearCookie("refreshToken", {
       httpOnly: true,
+      sameSite: "none",
+      domain: "web-learning-front.vercel.app",
+      secure: true,
     })
     res.status(200).json("Logout successful")
   },
@@ -90,6 +96,9 @@ const authController = {
       )
       res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
+        sameSite: "none",
+        domain: "web-learning-front.vercel.app",
+        secure: true,
         expires: new Date(Date.now() + TIME365),
       })
       res.status(200).json({ accessToken: newAcessToken })

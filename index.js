@@ -36,10 +36,10 @@ app.use(
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true)
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://web-learning-front.vercel.app"
-  )
+  // res.header(
+  //   "Access-Control-Allow-Origin",
+  //   "https://web-learning-front.vercel.app"
+  // )
   res.header(
     "Access-Control-Allow-Methods",
     "GET,PUT,POST,DELETE,UPDATE,OPTIONS"

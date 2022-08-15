@@ -83,7 +83,7 @@ const authController = {
   refreshToken: async (req, res) => {
     const TIME365 = 365 * 24 * 3600 * 1000
     // const refreshToken = req.cookies.refreshToken
-    const refreshToken = req.body.token
+    const refreshToken = req.token
     if (!refreshToken) return res.status(401).json("You're not authenticated")
     jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
       if (err) return res.status(403).json("Refresh token is not valid")

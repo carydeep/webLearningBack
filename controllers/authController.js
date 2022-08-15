@@ -62,7 +62,7 @@ const authController = {
         httpOnly: true,
         hostOnly: true,
         sameSite: "none",
-        domain: "learning-web-education.herokuapp.com",
+        domain: "localhost:3000",
         expires: new Date(Date.now() + TIME365),
       })
       const { password: pass, ...removePass } = user._doc

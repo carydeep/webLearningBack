@@ -66,7 +66,7 @@ const authController = {
         expires: new Date(Date.now() + TIME365),
       })
       const { password: pass, ...removePass } = user._doc
-      return res.status(200).json({ ...removePass, accessToken })
+      return res.status(200).json({ ...removePass, accessToken, refreshToken })
     } catch (error) {
       return res.status(500).json(error)
     }

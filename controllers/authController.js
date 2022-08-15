@@ -62,7 +62,7 @@ const authController = {
         httpOnly: true,
         hostOnly: true,
         sameSite: "none",
-        domain: "localhost:3000",
+        domain: "https://web-learning-front.vercel.app",
         expires: new Date(Date.now() + TIME365),
       })
       const { password: pass, ...removePass } = user._doc

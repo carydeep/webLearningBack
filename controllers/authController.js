@@ -57,10 +57,11 @@ const authController = {
         process.env.JWT_REFRESH_KEY
       )
       res.cookie("refreshToken", refreshToken, {
-        httpOnly: false,
-        sameSite: "strict",
         secure: true,
         path: "/",
+        httpOnly: true,
+        hostOnly: true,
+        sameSite: false,
         domain: ".vercel.app",
         expires: new Date(Date.now() + TIME365),
       })

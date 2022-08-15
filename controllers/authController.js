@@ -40,7 +40,6 @@ const authController = {
   },
   loginUser: async (req, res) => {
     try {
-      const TIME365 = 365 * 24 * 3600 * 1000
       const { username, password } = req.body
       const user = await User.findOne({ username })
       if (!user) return res.status(404).json("Wrong user or password")
@@ -56,15 +55,6 @@ const authController = {
         "365d",
         process.env.JWT_REFRESH_KEY
       )
-      res.cookie("refreshToken", refreshToken, {
-        secure: true,
-        path: "/",
-        httpOnly: true,
-        hostOnly: true,
-        sameSite: "none",
-        // domain: ".vercel.app",
-        expires: new Date(Date.now() + TIME365),
-      })
       const { password: pass, ...removePass } = user._doc
       return res.status(200).json({ ...removePass, accessToken, refreshToken })
     } catch (error) {
@@ -72,18 +62,10 @@ const authController = {
     }
   },
   logoutUser: async (req, res) => {
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      sameSite: "none",
-      domain: ".vercel.app",
-      secure: true,
-    })
     res.status(200).json("Logout successful")
   },
   refreshToken: async (req, res) => {
-    const TIME365 = 365 * 24 * 3600 * 1000
-    // const refreshToken = req.cookies.refreshToken
-    const refreshToken = req.token
+    const refreshToken = req.body.token
     if (!refreshToken) return res.status(401).json("You're not authenticated")
     jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
       if (err) return res.status(403).json("Refresh token is not valid")
@@ -97,13 +79,6 @@ const authController = {
         "365d",
         process.env.JWT_REFRESH_KEY
       )
-      res.cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        sameSite: "none",
-        domain: "web-learning-front.vercel.app",
-        secure: true,
-        expires: new Date(Date.now() + TIME365),
-      })
       res
         .status(200)
         .json({ accessToken: newAcessToken, refreshToken: newRefreshToken })

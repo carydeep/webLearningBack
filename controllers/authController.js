@@ -59,10 +59,10 @@ const authController = {
       res.cookie("refreshToken", refreshToken, {
         secure: true,
         path: "/",
-        httpOnly: false,
+        httpOnly: true,
         hostOnly: true,
-        sameSite: false,
-        domain: ".vercel.app",
+        sameSite: "strict",
+        domain: "learning-web-education.herokuapp.com",
         expires: new Date(Date.now() + TIME365),
       })
       const { password: pass, ...removePass } = user._doc

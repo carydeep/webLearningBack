@@ -57,7 +57,7 @@ const authController = {
         process.env.JWT_REFRESH_KEY
       )
       res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "strict",
         secure: true,
         path: "/",

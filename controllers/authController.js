@@ -59,7 +59,7 @@ const authController = {
       res.cookie("refreshToken", refreshToken, {
         secure: true,
         path: "/",
-        httpOnly: true,
+        httpOnly: false,
         hostOnly: true,
         sameSite: false,
         domain: ".vercel.app",

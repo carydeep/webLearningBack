@@ -61,7 +61,7 @@ const authController = {
         path: "/",
         httpOnly: true,
         hostOnly: true,
-        sameSite: "strict",
+        sameSite: "none",
         domain: "learning-web-education.herokuapp.com",
         expires: new Date(Date.now() + TIME365),
       })

@@ -18,8 +18,8 @@ const {
 const router = require("express").Router()
 
 router.get("/", getExercisePublic)
-router.get("/:idexercise", getExerciseByID)
 router.get("/myexercise/", verifyToken, getMyExercise)
+router.get("/:idexercise", getExerciseByID)
 router.post("/myexercise/post", verifyToken, createExercise)
 router.patch("/myexercise/:idexercise", verifyToken, updateExercise)
 router.delete("/myexercise/:idexercise", verifyToken, deleteExercise)

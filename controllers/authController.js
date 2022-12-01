@@ -23,7 +23,7 @@ const authController = {
       const user = await newUser.save()
       return res.status(200).json(user)
     } catch (error) {
-      return res.status(500).json(error)
+      return res.status(500).json(error.message)
     }
   },
   generateToken: (user, expire, secretKey) => {
@@ -58,7 +58,7 @@ const authController = {
       const { password: pass, ...removePass } = user._doc
       return res.status(200).json({ ...removePass, accessToken, refreshToken })
     } catch (error) {
-      return res.status(500).json(error)
+      return res.status(500).json(error.message)
     }
   },
   logoutUser: async (req, res) => {

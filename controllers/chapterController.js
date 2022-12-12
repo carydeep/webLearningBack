@@ -1,4 +1,4 @@
-const removeVietnameseTones = require("../commonFunction")
+const { removeVietnameseTones } = require("../commonFunction")
 const Course = require("../models/Course")
 const ChapterCourse = require("../models/Chapter")
 
@@ -41,6 +41,7 @@ const chapterController = {
           select: "name slug content",
         },
       })
+      await deleteCache("courses")
       return res.status(201).json(addChapterToCourse)
     } catch (err) {
       return res.status(500).json(err.message)
@@ -65,6 +66,7 @@ const chapterController = {
           select: "name slug content",
         },
       })
+      await deleteCache("courses")
       return res.status(200).json(course)
     } catch (error) {
       return res.status(500).json(error.message)
@@ -95,7 +97,8 @@ const chapterController = {
             select: "name slug content",
           },
         })
-        .then((result) => {
+        .then(async (result) => {
+          await deleteCache("courses")
           return res.status(200).json(result)
         })
         .catch((err) => {

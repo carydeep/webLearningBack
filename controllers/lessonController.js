@@ -1,4 +1,4 @@
-const removeVietnameseTones = require("../commonFunction")
+const { removeVietnameseTones } = require("../commonFunction")
 const LessonChapter = require("../models/Lesson")
 const ChapterCourse = require("../models/Chapter")
 const Course = require("../models/Course")
@@ -35,7 +35,8 @@ const lessonController = {
       )
         .select("name slug lessons")
         .populate("lessons", "name slug content")
-        .then((result) => {
+        .then(async (result) => {
+          await deleteCache("courses")
           return res.status(201).json(result)
         })
         .catch((err) => {
@@ -54,7 +55,8 @@ const lessonController = {
       { new: true }
     )
       .select("name slug")
-      .then((result) => {
+      .then(async (result) => {
+        await deleteCache("courses")
         return res.status(200).json(result)
       })
       .catch((err) => {
@@ -80,7 +82,8 @@ const lessonController = {
       )
         .select("name slug lessons")
         .populate("lessons", "name slug content")
-        .then((result) => {
+        .then(async (result) => {
+          await deleteCache("courses")
           return res.status(200).json(result)
         })
         .catch((err) => {
@@ -113,7 +116,8 @@ const lessonController = {
         { new: true }
       )
         .select("name slug content")
-        .then((result) => {
+        .then(async (result) => {
+          await deleteCache("courses")
           return res.status(201).json(result)
         })
         .catch((err) => {
@@ -132,7 +136,8 @@ const lessonController = {
         { new: true }
       )
         .select("name slug content")
-        .then((result) => {
+        .then(async (result) => {
+          await deleteCache("courses")
           return res.status(200).json(result)
         })
         .catch((err) => {

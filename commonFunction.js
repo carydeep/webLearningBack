@@ -1,3 +1,16 @@
+const { createClient } = require("redis")
+const client = createClient({
+  url: process.env.URL_CONNECT_REDIS,
+})
+client.on("error", (err) => console.log("Redis Client Error", err))
+;(async () => {
+  try {
+    await client.connect()
+  } catch (error) {
+    console.log(error)
+  }
+})()
+
 function removeVietnameseTones(str) {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
@@ -31,4 +44,21 @@ function removeVietnameseTones(str) {
   return str
 }
 
-module.exports = removeVietnameseTones
+function getOrSetCache(key, callback) {
+  return new Promise(async (resolve, reject) => {
+    const cacheResult = await client.get(key)
+    if (cacheResult != null) return resolve(JSON.parse(cacheResult))
+    const refreshData = await callback()
+    client.setEx(key, 3600, JSON.stringify(refreshData))
+    return resolve(refreshData)
+  })
+}
+
+function deleteCache(key) {
+  return new Promise(async (resolve, reject) => {
+    const cacheDeleted = await client.del(key)
+    return resolve(JSON.parse(cacheDeleted))
+  })
+}
+
+module.exports = { removeVietnameseTones, getOrSetCache, deleteCache }

@@ -1,5 +1,11 @@
-const removeVietnameseTones = require("../commonFunction")
+const {
+  removeVietnameseTones,
+  getOrSetCache,
+  deleteCache,
+} = require("../commonFunction")
 const Course = require("../models/Course")
+const { createClient } = require("redis")
+const client = createClient()
 
 const courseController = {
   addCourse: async (req, res) => {
@@ -52,13 +58,24 @@ const courseController = {
   },
   getCoursePublic: async (req, res) => {
     try {
-      await Course.find({ public: true })
+      await getOrSetCache(`courses`, async () => {
+        const courses = await Course.find({ public: true })
+        return courses
+      })
         .then((result) => {
           return res.status(200).json(result)
         })
         .catch((err) => {
           return res.status(400).json(err.message)
         })
+      // await Course.find({ public: true })
+      //   .then(async (result) => {
+      //     await client.setEx("courses", 3600, JSON.stringify(result))
+      //     return res.status(200).json(result)
+      //   })
+      //   .catch((err) => {
+      //     return res.status(400).json(err.message)
+      //   })
     } catch (error) {
       return res.status(500).json(error.message)
     }
@@ -68,6 +85,7 @@ const courseController = {
       const slug = req.params.slugcourse
       const author = req.user.id
       const result = await Course.findOneAndDelete({ slug, author })
+      await deleteCache(`course?slug=${slug}`)
       if (!result) return res.status(400).json("Could not find course !")
       return res.status(200).json(result)
     } catch (error) {
@@ -77,8 +95,8 @@ const courseController = {
   getCourseBySlug: async (req, res) => {
     try {
       const slug = req.params.slug
-      await Course.findOne({ slug, public: true })
-        .populate({
+      await getOrSetCache(`courses?slug=${slug}`, async () => {
+        const course = await Course.findOne({ slug, public: true }).populate({
           path: "chapters",
           select: "name slug lessons",
           populate: {
@@ -86,6 +104,8 @@ const courseController = {
             select: "name slug content",
           },
         })
+        return course
+      })
         .then((result) => {
           return res.status(200).json(result)
         })
@@ -118,6 +138,7 @@ const courseController = {
         { new: true }
       )
       if (!updatedCourse) return res.status(400).json("Can't find course")
+      await deleteCache("courses")
       return res.status(200).json(updatedCourse)
     } catch (error) {
       return res.status(500).json(error)
@@ -142,7 +163,8 @@ const courseController = {
             select: "name slug content",
           },
         })
-        .then((result) => {
+        .then(async (result) => {
+          await deleteCache("courses")
           return res.status(200).json(result)
         })
         .catch((err) => {
@@ -171,7 +193,8 @@ const courseController = {
             select: "name slug content",
           },
         })
-        .then((result) => {
+        .then(async (result) => {
+          await deleteCache("courses")
           return res.status(200).json(result)
         })
         .catch((err) => {

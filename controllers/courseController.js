@@ -4,6 +4,8 @@ const {
   deleteCache,
 } = require("../commonFunction")
 const Course = require("../models/Course")
+const ChapterCourse = require("../models/Chapter")
+const LessonChapter = require("../models/Lesson")
 const { createClient } = require("redis")
 const client = createClient()
 
@@ -85,6 +87,8 @@ const courseController = {
       const slug = req.params.slugcourse
       const author = req.user.id
       const result = await Course.findOneAndDelete({ slug, author })
+      await ChapterCourse.deleteMany({ courseID: result._id })
+      await LessonChapter.deleteMany({ courseID: result._id })
       await deleteCache(`course?slug=${slug}`)
       if (!result) return res.status(400).json("Could not find course !")
       return res.status(200).json(result)

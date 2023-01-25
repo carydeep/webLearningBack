@@ -1,4 +1,4 @@
-const { removeVietnameseTones } = require("../commonFunction")
+const { removeVietnameseTones, deleteCache } = require("../commonFunction")
 const Course = require("../models/Course")
 const ChapterCourse = require("../models/Chapter")
 const LessonChapter = require("../models/Lesson")

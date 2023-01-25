@@ -99,7 +99,7 @@ const lessonController = {
       const { type, value, button, language } = req.body
       await LessonChapter.findOneAndUpdate(
         {
-          __id: idlesson,
+          _id: idlesson,
           courseID: idcourse,
           chapterID: idchapter,
         },

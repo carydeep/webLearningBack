@@ -90,6 +90,7 @@ const courseController = {
       await ChapterCourse.deleteMany({ courseID: result._id })
       await LessonChapter.deleteMany({ courseID: result._id })
       await deleteCache(`course?slug=${slug}`)
+      await deleteCache(`courses`)
       if (!result) return res.status(400).json("Could not find course !")
       return res.status(200).json(result)
     } catch (error) {

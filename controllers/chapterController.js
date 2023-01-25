@@ -1,6 +1,7 @@
 const { removeVietnameseTones } = require("../commonFunction")
 const Course = require("../models/Course")
 const ChapterCourse = require("../models/Chapter")
+const LessonChapter = require("../models/Lesson")
 
 const chapterController = {
   addChapter: async (req, res) => {
@@ -84,6 +85,7 @@ const chapterController = {
         .catch((err) => {
           return res.status(400).json(err.message)
         })
+      await LessonChapter.deleteMany({ chapterID: chapter._id })
       await Course.findOneAndUpdate(
         { _id: idcourse, author: userID },
         { $pull: { chapters: chapter._id } },

@@ -1,4 +1,5 @@
 const Exercise = require("../models/Exercise")
+const Question = require("../models/Question")
 
 const exerciseController = {
   getMyExercise: async (req, res) => {
@@ -64,7 +65,8 @@ const exerciseController = {
       const author = req.user.id
       const _id = req.params.idexercise
       await Exercise.findOneAndDelete({ _id, author })
-        .then((result) => {
+        .then(async (result) => {
+          await Question.deleteMany({ exerciseId: result._id })
           return res.status(200).json(result)
         })
         .catch((err) => {
